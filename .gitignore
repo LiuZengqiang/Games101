@@ -1,0 +1,11 @@
+# 编译输出目录
+build/
+
+# 临时文件
+*.swp
+
+# vscode文件
+.vscode/
+
+# 压缩文件
+*.zip
