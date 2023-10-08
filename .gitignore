@@ -6,6 +6,7 @@ build/
 
 # vscode文件
 .vscode/
+.DS_Store
 
 # 压缩文件
 *.zip
