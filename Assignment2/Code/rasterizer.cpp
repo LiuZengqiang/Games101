@@ -1,7 +1,7 @@
 //
 // Created by goksu on 4/6/19.
 //
-
+#include <limits>
 #include <algorithm>
 #include <vector>
 #include "rasterizer.hpp"
@@ -42,7 +42,7 @@ static bool insideTriangle(int x, int y, const Vector3f* _v) {
 
   // TODO: 使用叉乘方法判断点是否在三角形内部
   // ref:[二维平面上判断点是否在三角形内-算法4](https://www.cnblogs.com/tenosdoit/p/4024413.html)
-  Vector3f P(x + 0.5f, y + 0.5f, 1.0f);
+  Vector3f P(x, y, 0.0f);
 
   const Vector3f& A = _v[0];
   const Vector3f& B = _v[1];
@@ -59,8 +59,7 @@ static bool insideTriangle(int x, int y, const Vector3f* _v) {
   float z1 = AB.cross(AP).z();
   float z2 = BC.cross(BP).z();
   float z3 = CA.cross(CP).z();
-
-  return (z1 > 0 && z2 > 0 && z3 > 0) || (z1 < 0 && z2 < 0 && z3 < 0);
+  return (z1 * z2 >= 0.0 && z2 * z3 >= 0.0);
 }
 
 static std::tuple<float, float, float> computeBarycentric2D(float x, float y,
@@ -144,24 +143,16 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
 
   // TODO : set the current pixel (use the set_pixel function) to the color of
   // the triangle (use getColor function) if it should be painted.
-  float aabb_minx = 0;
-  float aabb_miny = 0;
-  float aabb_maxx = 0;
-  float aabb_maxy = 0;
-  
-  for (size_t i = 0; i < 3; i++) {
-    const Vector3f& p = t.v[i];
-    if (i == 0) {
-      aabb_minx = aabb_maxx = p.x();
-      aabb_miny = aabb_maxy = p.y();
-      continue;
-    }
+  float aabb_minx = FLT_MAX;
+  float aabb_miny = FLT_MAX;
+  float aabb_maxx = -aabb_minx;
+  float aabb_maxy = -aabb_miny;
 
-    aabb_minx = p.x() < aabb_minx ? p.x() : aabb_minx;
-    aabb_miny = p.y() < aabb_miny ? p.y() : aabb_miny;
-
-    aabb_maxx = p.x() > aabb_maxx ? p.x() : aabb_maxx;
-    aabb_maxy = p.y() > aabb_maxy ? p.y() : aabb_maxy;
+  for (const auto& vert : t.v) {
+    aabb_minx = std::min(aabb_minx, vert.x());
+    aabb_miny = std::min(aabb_miny, vert.y());
+    aabb_maxx = std::max(aabb_maxx, vert.x());
+    aabb_maxy = std::max(aabb_maxy, vert.y());
   }
 
   // iterate through the pixel and find if the current pixel is inside the
