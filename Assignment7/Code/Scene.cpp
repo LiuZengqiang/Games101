@@ -70,7 +70,7 @@ Vector3f Scene::shade(const Intersection &p, const Vector3f &wo) const {
   auto t = intersect(Ray(p.coords, p_p2light.normalized()));
 
   // 判断light是否被遮挡
-  if (t.distance >= p_p2light.norm() - EPSILON) {
+  if (t.distance >= p_p2light.norm() - 0.01) {
     Vector3f ws = p_p2light.normalized();
     Vector3f NN = p_light.normal;
     Vector3f N = p.normal;
