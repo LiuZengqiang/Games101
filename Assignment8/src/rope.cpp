@@ -50,6 +50,9 @@ Rope::Rope(Vector2D start, Vector2D end, int num_nodes, float node_mass,
   }
 }
 
+// 使用显式欧拉方法很难稳定, 相关讨论请参考以下链接
+// [HW8的一些问题](http://games-cn.org/forums/topic/hw8deyixiewenti/)
+// [关于作业8的一些问题解答](http://games-cn.org/forums/topic/guanyuzuoye8deyixiewentijieda/)
 void Rope::simulateEuler(float delta_t, Vector2D gravity) {
   for (auto &s : springs) {
     // TODO (Part 2): Use Hooke's law to calculate the force on a node
