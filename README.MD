@@ -21,7 +21,7 @@
 ![作业3-BlinnPhong](./output/homework3_phong.png)  
 * 纹理模型  
 ![作业3-texture](./output/homework3_texture.png)  
-* 凹凸贴图模型
+* 凹凸贴图模型  
 ![作业3-bump](./output/homework3_bump.png)  
 * 位移贴图  
 ![作业3-displacement](./output/homework3_displacement.png)  
